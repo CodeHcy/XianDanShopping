@@ -1,0 +1,2 @@
+# XianDanShopping
+一个基于vue和ssm框架的校园二手交易交际平台
