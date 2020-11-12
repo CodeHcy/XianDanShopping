@@ -60,7 +60,7 @@ public class UserController {
         }
         HttpSession session = request.getSession();
         session.setAttribute("UserInfo",selectUser);
-        Cookie cookie = new Cookie("user",selectUser.getBname());
+        Cookie cookie = new Cookie("username",selectUser.getBname());
         cookie.setPath("/");
         cookie.setDomain(".aotori.com");
         cookie.setMaxAge(7*24*60*60);
