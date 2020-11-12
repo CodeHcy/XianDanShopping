@@ -1,6 +1,6 @@
 package com.xawl.jswn.xiandan.domain;
 
-public class loginUser {
+public class BUser {
     private String bname;
     private String bpsd;
     private String brealname;
@@ -12,6 +12,43 @@ public class loginUser {
     private Integer bcredit;
     private String bqianming;
     private String lasttime;
+    private Integer bfocus;
+    private Integer bfans;
+    private Integer bmsg;
+
+    public Integer getBfocus() {
+        return bfocus;
+    }
+
+    public void setBfocus(Integer bfocus) {
+        this.bfocus = bfocus;
+    }
+
+    public Integer getBfans() {
+        return bfans;
+    }
+
+    public void setBfans(Integer bfans) {
+        this.bfans = bfans;
+    }
+
+    public Integer getBmsg() {
+        return bmsg;
+    }
+
+    public void setBmsg(Integer bmsg) {
+        this.bmsg = bmsg;
+    }
+
+    public String getBtags() {
+        return btags;
+    }
+
+    public void setBtags(String btags) {
+        this.btags = btags;
+    }
+
+    private String btags;
 
     public String getBname() {
         return bname;

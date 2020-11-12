@@ -1,8 +1,7 @@
 package com.xawl.jswn.xiandan.service;
 
 import com.xawl.jswn.xiandan.dao.UserLoginDao;
-import com.xawl.jswn.xiandan.domain.loginUser;
-import org.apache.ibatis.annotations.Select;
+import com.xawl.jswn.xiandan.domain.BUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class UserLogin {
     @Autowired
     UserLoginDao userLoginDao;
-    public loginUser selectUser(String name){
+    public BUser selectUser(String name){
         return userLoginDao.selectUser(name);
     }
 }

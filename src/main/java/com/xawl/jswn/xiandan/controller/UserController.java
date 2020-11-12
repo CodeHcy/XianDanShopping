@@ -1,7 +1,8 @@
 package com.xawl.jswn.xiandan.controller;
 
 import com.xawl.jswn.xiandan.domain.Msg;
-import com.xawl.jswn.xiandan.domain.loginUser;
+import com.xawl.jswn.xiandan.domain.BUser;
+import com.xawl.jswn.xiandan.domain.GetUserInfo;
 import com.xawl.jswn.xiandan.service.UserLogin;
 import com.xawl.jswn.xiandan.utiles.getYZM;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import redis.clients.jedis.Jedis;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,7 +24,7 @@ public class UserController {
 
     @Autowired()
     UserLogin userLogin;
-
+//    获取验证码
     @CrossOrigin
     @RequestMapping("/getVerify")
     @ResponseBody
@@ -34,17 +36,12 @@ public class UserController {
         System.out.println(YZM);
         return image;
     }
-
+// 登录验证
     @RequestMapping("/login")
     @ResponseBody
-    public Msg userLogin(HttpServletRequest request, loginUser loginUser, String YZM){
+    public Msg userLogin(HttpServletRequest request,HttpServletResponse response, BUser BUser, String YZM){
         Jedis jedis = new Jedis("127.0.0.1",6379);
-
-        System.out.println(loginUser.getBname());
-        System.out.println(loginUser.getBpsd());
-
         String randomCode = jedis.get(request.getRemoteAddr());
-        System.out.println(randomCode);
         if(jedis.ttl(request.getRemoteAddr()) == -2){
             return Msg.fail("验证码失效");
         }
@@ -52,18 +49,35 @@ public class UserController {
             return Msg.fail("验证码错误");
         }
 
-        com.xawl.jswn.xiandan.domain.loginUser selectUser = userLogin.selectUser(loginUser.getBname());
+        BUser selectUser = userLogin.selectUser(BUser.getBname());
 
         if(selectUser == null){
             return Msg.fail("用户名错误");
         }
         System.out.println("数据库" +selectUser.getBpsd());
-        if(loginUser.getBpsd().equals(selectUser.getBpsd())){
-            HttpSession session = request.getSession();
-            session.setAttribute("userInfo",selectUser);
-            return Msg.success();
-        }else{
+        if(!BUser.getBpsd().equals(selectUser.getBpsd())){
             return Msg.fail("密码错误");
         }
+        HttpSession session = request.getSession();
+        session.setAttribute("UserInfo",selectUser);
+        Cookie cookie = new Cookie("user",selectUser.getBname());
+        cookie.setPath("/");
+        cookie.setDomain(".aotori.com");
+        cookie.setMaxAge(7*24*60*60);
+        response.addCookie(cookie);
+        return Msg.success();
+    }
+//    获取用户信息
+    @RequestMapping("/getUserInfo")
+    public GetUserInfo getUserInfo(HttpServletRequest request,HttpServletResponse response){
+        GetUserInfo userInfo = new GetUserInfo();
+        if (request.getSession().getAttribute("UserInfo")==null){
+            userInfo.setCode(400);
+            userInfo.setMsg("登录已过期请再次登录");
+        }
+        userInfo.setCode(200);
+        userInfo.setMsg("");
+        userInfo.setUserInfo((BUser) request.getSession().getAttribute("UserInfo"));
+        return userInfo;
     }
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xawl.jswn.xiandan.dao.UserLoginDao">
+    <select id="selectUser" resultType="com.xawl.jswn.xiandan.domain.Msg">
+        select bid,bname,bpsd,bstatus,bpic,bscore,bcredit,bqianming,lasttime,bfans,bfocus,bmsg,btags  from buser where bname = #{name}
+    </select>
+
+</mapper>
