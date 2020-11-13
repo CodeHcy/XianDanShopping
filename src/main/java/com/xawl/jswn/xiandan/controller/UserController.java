@@ -26,7 +26,7 @@ public class UserController {
     UserLogin userLogin;
 //    获取验证码
     @CrossOrigin
-    @RequestMapping("/getVerify")
+    @RequestMapping("/api/user/getVerify.do")
     @ResponseBody
     public String user(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         getYZM getYZM = new getYZM();
@@ -37,7 +37,7 @@ public class UserController {
         return image;
     }
 // 登录验证
-    @RequestMapping("/login")
+    @RequestMapping("/api/user/login.do")
     @ResponseBody
     public Msg userLogin(HttpServletRequest request,HttpServletResponse response, BUser BUser, String YZM){
         Jedis jedis = new Jedis("127.0.0.1",6379);
@@ -68,7 +68,7 @@ public class UserController {
         return Msg.success();
     }
 //    获取用户信息
-    @RequestMapping("/getUserInfo")
+    @RequestMapping("/api/user/getUserInfo.do")
     public GetUserInfo getUserInfo(HttpServletRequest request,HttpServletResponse response){
         GetUserInfo userInfo = new GetUserInfo();
         if (request.getSession().getAttribute("UserInfo")==null){

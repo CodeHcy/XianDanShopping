@@ -11,10 +11,16 @@
        https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <!-- springmvc的配置文件，声明controller和其他web相关的对象 -->
-
+    <mvc:annotation-driven/>
     <!-- 组件扫描器，扫描com.xawl.controller包下的注解 -->
     <context:component-scan base-package="com.xawl.jswn.xiandan.controller" />
-
+<!--    拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/*.do"/>
+            <bean class="com.xawl.jswn.xiandan.handler.MyHandler"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
     <mvc:cors>
         <mvc:mapping path="/**"
          allowed-origins="*"
@@ -28,8 +34,9 @@
         1.响应ajax请求，返回json
         2.解决静态资源访问问题
      -->
-    <mvc:resources mapping="/dist/**" location="/dist/" />
-    <mvc:annotation-driven />
+<!--    <mvc:resources mapping="/dist/**" location="/dist/" />-->
+
+
 
 
 </beans>
